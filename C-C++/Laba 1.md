@@ -134,3 +134,75 @@ int main() {
     //
 ```
 
+
+**ВЫПОЛНЕНО** 
+``` C
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <time.h>
+int main()
+{
+    int n;
+    printf("enter size of the array: ");
+    scanf("%d", &n);
+    int array[n];
+    srand(time(NULL));
+    for (int i = 0; i < n; i++)
+    {
+        array[i] = rand() % 100 - rand() % 100;
+        printf("%d ", array[i]);
+    }
+    int c;
+    printf("\nenter C: ");
+    scanf("%d", &c);
+    int cn = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (array[i] > c)
+        {
+
+            cn += 1;
+        }
+    }
+    printf("1) count of numbers larger then %d is %d", c, cn);
+    int max, max_i;
+    max = array[0];
+    for (int i = 0; i < n; i++)
+    {
+        if (abs(array[i]) > abs(max))
+        {
+            max = array[i];
+            max_i = i;
+        }
+    }
+    float max_mul = 1;
+    for (int i = max_i + 1; i < n; i++)
+    {
+        max_mul *= array[i];
+    }
+    printf("\n2) maximum value with abs = %d on index = %d | multiply of numbers after = %f", max, max_i, max_mul);
+  
+    for (int i = 0; i < n - 1; i++)
+    {
+        for (int j = 0; j < n - i - 1; j++)
+        {
+            if (array[j] > array[j + 1])
+            {
+                int tmp = array[j];
+                array[j] = array[j + 1];
+                array[j + 1] = tmp;
+            }
+        }
+    }
+    printf("\n3) sorted array \n");
+    for (int i = 0; i < n; i++)
+    {
+
+        printf("%d ", array[i]);
+
+    }
+    return 0;
+
+}
+```
