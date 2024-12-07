@@ -17,14 +17,11 @@
 
 ``` C 
 #include <stdio.h>
-
 #include <stdlib.h>
-
 #include <limits.h>
 
-  
-
-// Function to find negative elements in rows with zeros
+ 
+// Функция для поиска отрицательных элементов в строках с нулями
 
 void countNegativesInZeroRows(int rows, int cols, int matrix[rows][cols])
 {
@@ -49,7 +46,7 @@ void countNegativesInZeroRows(int rows, int cols, int matrix[rows][cols])
         }
     }
 }
-// Function to find saddle points
+// Функция для поиска седловых точек
 
 void findSaddlePoints(int rows, int cols, int matrix[rows][cols])
 {
@@ -70,7 +67,7 @@ void findSaddlePoints(int rows, int cols, int matrix[rows][cols])
 
             }
 
-            // Check if maximum in column
+            // Проверьте, есть ли максимум в столбце
             for (int k = 0; k < rows; k++)
             {
                 if (matrix[k][j] > matrix[i][j])
@@ -89,7 +86,7 @@ void findSaddlePoints(int rows, int cols, int matrix[rows][cols])
     }
 
 }
-// Function to swap row and column (if on main diagonal)
+// Функция для замены строки и столбца (если они на главной диагонали)
 void swapRowCol(int rows, int cols, int matrix[rows][cols], int row, int col)
 {
     if (row == col)
@@ -132,7 +129,7 @@ int main()
     
     printf("\nSaddle points:\n");
     findSaddlePoints(rows, cols, matrix);
-    // Part 3 - Finding and swapping (needs improvement for multiple saddle points)
+    // Part 3 - Поиск и замена (требуется улучшение для нескольких седловых точек)
     
     int minSaddleRow = -1, minSaddleCol = -1, minSaddleVal = INT_MAX;
     for (int i = 0; i < rows; i++)
