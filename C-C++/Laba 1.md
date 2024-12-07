@@ -179,10 +179,9 @@ int main()
     float max_mul = 1;
     for (int i = max_i + 1; i < n; i++)
     {
-        max_mul *= array[i];
+       max_mul *= array[i];
     }
-    printf("\n2) maximum value with abs = %d on index = %d | multiply of numbers after = %f", max, max_i, max_mul);
-  
+    printf("\n2) maximum value with abs = %d on index = %d | multiply of numbers after = %f", max, max_i, max_mul); 
     for (int i = 0; i < n - 1; i++)
     {
         for (int j = 0; j < n - i - 1; j++)
@@ -198,11 +197,8 @@ int main()
     printf("\n3) sorted array \n");
     for (int i = 0; i < n; i++)
     {
-
         printf("%d ", array[i]);
-
     }
     return 0;
-
 }
 ```
