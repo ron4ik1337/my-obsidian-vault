@@ -161,7 +161,6 @@ int main()
     {
         if (array[i] > c)
         {
-
             cn += 1;
         }
     }
