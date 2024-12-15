@@ -10,7 +10,7 @@ int main() {
     double a, b, c, x, y;
 
     // Ввод коэффициентов и значения x
-    printf("Enter odds a, b и c: ");
+    printf("Enter odds a, b and c: ");
     scanf("%lf %lf %lf", &a, &b, &c);
     printf("Enter x value: ");
     scanf("%lf", &x);
