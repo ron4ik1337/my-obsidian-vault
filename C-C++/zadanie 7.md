@@ -61,7 +61,6 @@ int main() {
         printf("The text contains more symbols and numbers than letters.\n");
     }
     return 0;
-
 }
 ```
 
