@@ -5,7 +5,38 @@
 
 Задание 15.
 
+```C
+#include <stdio.h>
+#include <math.h>
 
+double arctan_series(double x, double precision) {
+    double sum = 0.0;
+    double term;
+    int n = 0;
+    do {
+        // Вычисляем текущий член ряда
+        term = pow(-1, n) * (pow(x, 2 * n + 1) / tgamma(2 * n + 2)); // (2n+1)!
+       // Добавляем текущий член к сумме
+        sum += term;
+        n++;
+    } while (fabs(term) >= precision); // Проверка на заданную точность
+    return sum;
+} 
+int main() {
+    double x, precision;
+    // Ввод значения x
+    printf("Enter value x: ");
+    scanf("%lf", &x);
+    // Ввод желаемой точности
+    printf("Enter a precision value (eg 0.00001): ");
+    scanf("%lf", &precision);
+    // Вычисление значения arctg(x)
+    double result = arctan_series(x, precision);
+    // Вывод результата
+    printf("y = arctg(%.2lf) = %.10lf\n", x, result); 
+    return 0;
+}
+```
 
 ### Пояснение программы
 
