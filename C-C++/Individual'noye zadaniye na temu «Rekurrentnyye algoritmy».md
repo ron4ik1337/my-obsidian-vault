@@ -3,5 +3,38 @@
 
 **Цель работы** – освоить вычисления по рекуррентным последовательностям.
 
-Задание 15.
+Задание 15 выполнено.
+
+```C
+#include <stdio.h>
+#include <math.h>
+
+// Функция для вычисления arctg(x)
+
+double arctg(double x) {
+    double result = 0.0;
+    double term = x; // Первый член ряда
+    int n = 0;
+    
+    // Суммируем члены ряда до тех пор, пока абсолютное значение терма не станет меньше epsilon
+
+    while (fabs(term) >= 1e-5) {
+        result += term;
+        n++;
+        term *= -x * x / (2 * n + 1); // Формула для следующего члена ряда
+    }
+    return result;
+}
+int main() {
+    printf(" x\t\t arctg(x)\n");
+    printf("------------------------\n");
+    
+    // Вычисляем значение arctg(x) для x от 0 до 1 с шагом 0.1
+
+    for (double x = 0.0; x <= 1.0; x += 0.1) {
+        printf("%.2f\t\t %.6f\n", x, arctg(x));
+    }
+    return 0;
+}
+```
 
