@@ -51,3 +51,36 @@ int main() {
 
 
 ЗАДАНИЕ 5 ВЫПОЛНЕНО 
+
+```C
+#include <stdio.h>
+#include <math.h>
+
+double f(int a, int n) {
+    double sum1 = 0, sum2 = 0;
+
+    for (int i = 1; i <= n; i++) {
+        sum1 += (double)a / i;
+        sum2 += (double)a / (i * i);
+    }
+
+    return sum1 / fabs(sum2);
+}
+
+int main() {
+    printf("=================================\n");
+    printf("|  a/n  |   5   |   6   |   7   |  8  |\n");
+    printf("=================================\n");
+    
+    for (int a = 1; a <= 2; a++) {
+        for (int n = 5; n <= 8; n++) {
+            double result = f(a, n);
+            printf("|  %d | %.3f |\n", a, result);
+        }
+    }
+    
+    printf("=================================\n");
+    return 0;
+}
+
+```
