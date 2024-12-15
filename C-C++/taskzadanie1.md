@@ -77,8 +77,7 @@ int main() {
             double result = f(a, n);
             printf("|  %d | %.3f |\n", a, result);
         }
-    }
-    
+    } 
     printf("=================================\n");
     return 0;
 }
