@@ -5,7 +5,7 @@
 
 ```C
 #include <stdio.h>
-#include <math.h>  
+#include <math.h>
 
 #define EPS 0.00001
 
@@ -13,17 +13,15 @@
 
 double ax(double a, double x) {
     if (a <= 0) {
-        return 0; // Обработка случая, когда a <= 0
+        return (x == 0) ? 1 : 0; // Обработка случаев, когда a <= 0
     }
     double sum = 1.0; // Первый член ряда (k=0)
     double term = 1.0; // Текущий член ряда
-    double factor = x * log(a); // Предварительное вычисление x * ln(a)
+    double factor = x * log(a); // Вычисляем x * ln(a)
     for (int k = 1; ; k++) {
         term *= factor / k; // Вычисляем k-ый член ряда
         sum += term; // Добавляем к сумме
-
         // Проверяем, достигли ли мы требуемой точности
-
         if (fabs(term) < EPS) {
             break;
         }
@@ -48,6 +46,7 @@ int main() {
     }
     printf("========================================\n");
     return 0;
+
 }
 ```
 
