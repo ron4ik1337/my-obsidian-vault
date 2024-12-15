@@ -6,42 +6,45 @@
 
 ```C
 #include <stdio.h>
-
 int main() {
-    int n;
+    int n;
+    
+    // Запрашиваем размер массива
 
-    // Запрашиваем размер массива
-    printf("Введите размер массива: ");
-    scanf("%d", &n);
+    printf("Enter array size: ");
+    scanf("%d", &n);
+    
+    // Проверка на корректность размера
 
-    // Проверка на корректность размера
-    if (n <= 0) {
-        printf("Размер массива должен быть положительным.\n");
-        return 1;
-    }
+    if (n <= 0) {
+        printf("The array size must be positive.\n");
+        return 1;
+    }
+    int arr[n];  // Исходный массив
+    int reversed[n];  // Новый массив для хранения элементов в обратном порядке
+    
+    // Ввод элементов массива
 
-    int arr[n];  // Исходный массив
-    int reversed[n];  // Новый массив для хранения элементов в обратном порядке
+    printf("Enter %d array elements:\n", n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    
+    // Заполнение нового массива элементами в обратном порядке
 
-    // Ввод элементов массива
-    printf("Введите %d элементов массива:\n", n);
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &arr[i]);
-    }
+    for (int i = 0; i < n; i++) {
+       reversed[i] = arr[n - 1 - i];
 
-    // Заполнение нового массива элементами в обратном порядке
-    for (int i = 0; i < n; i++) {
-        reversed[i] = arr[n - 1 - i];
-    }
+    }
 
-    // Вывод нового массива
-    printf("Новый массив в обратном порядке:\n");
-    for (int i = 0; i < n; i++) {
-        printf("%d ", reversed[i]);
-    }
-    printf("\n");
+    // Вывод нового массива
 
-    return 0;
+    printf("New array in reverse order:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", reversed[i]);
+    }
+    printf("\n");
+    return 0;
 }
 
 ```
