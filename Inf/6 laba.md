@@ -175,19 +175,26 @@ End Sub
 ```basic
 Sub ReplaceCommasWithEllipsis
     Dim Doc As Object
-    Dim SearchDescriptor As Object
     Dim ReplaceDescriptor As Object
+    Dim Found As Integer
     
+    ' Инициализация документа
     Doc = ThisComponent
-    SearchDescriptor = Doc.createSearchDescriptor()
-    SearchDescriptor.SearchString = ","
-    SearchDescriptor.ReplaceString = "..."
     
-    Dim Found As Object
-    Found = Doc.replaceAll(SearchDescriptor)
+    ' Создание объекта ReplaceDescriptor
+    ReplaceDescriptor = Doc.createReplaceDescriptor()
     
-    MsgBox "Все запятые заменены на троеточие."
+    ' Настройка параметров поиска и замены
+    ReplaceDescriptor.SearchString = ","
+    ReplaceDescriptor.ReplaceString = "..."
+    
+    ' Выполнение замены всех запятых на троеточие
+    Found = Doc.replaceAll(ReplaceDescriptor)
+    
+    ' Вывод сообщения о результате
+    MsgBox "Все запятые заменены на троеточие. Количество замен: " & Found
 End Sub
+
 ```
 
 **Примечание:** Данный макрос заменяет все запятые в документе на троеточие. Если требуется более сложная логика (например, разноцветные точки), потребуется использовать курсор и перебор символов.
