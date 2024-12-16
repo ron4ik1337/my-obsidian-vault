@@ -66,23 +66,40 @@ End Sub
 Sub ClearFormatFirstParagraph
     Dim Doc As Object
     Dim Text As Object
+    Dim Enum As Object
     Dim Paragraph As Object
     
+    ' Инициализация документа и текстового объекта
     Doc = ThisComponent
     Text = Doc.Text
-    Paragraph = Text.getParagraphByIndex(0) ' Индекс первого абзаца - 0
     
-    ' Сбросить форматирование первого абзаца
-    Paragraph.CharFontName = "Liberation Serif"
-    Paragraph.CharColor = RGB(0, 0, 0)
-    Paragraph.CharHeight = 12
-    Paragraph.CharUnderline = com.sun.star.awt.FontUnderline.NONE
-    Paragraph.CharWeight = com.sun.star.awt.FontWeight.NORMAL
-    Paragraph.CharBackColor = RGB(255, 255, 255)
-    Paragraph.CharPosture = com.sun.star.awt.FontSlant.NONE
+    ' Создание перечислителя для абзацев
+    Enum = Text.createEnumeration
+    
+    ' Проверка наличия абзацев в документе
+    If Enum.hasMoreElements Then
+        Paragraph = Enum.nextElement
+        If Paragraph.supportsService("com.sun.star.text.Paragraph") Then
+            ' Сбросить форматирование первого абзаца
+            Paragraph.CharFontName = "Liberation Serif" ' Или любой другой стандартный шрифт
+            Paragraph.CharColor = RGB(0, 0, 0) ' Черный цвет
+            Paragraph.CharHeight = 12 ' Размер шрифта 12 pt
+            Paragraph.CharUnderline = com.sun.star.awt.FontUnderline.NONE
+            Paragraph.CharWeight = com.sun.star.awt.FontWeight.NORMAL
+            Paragraph.CharBackColor = RGB(255, 255, 255) ' Белый фон
+            Paragraph.CharPosture = com.sun.star.awt.FontSlant.NONE
+        Else
+            MsgBox "Первый элемент не является абзацем."
+            Exit Sub
+        End If
+    Else
+        MsgBox "Документ не содержит абзацев."
+        Exit Sub
+    End If
     
     MsgBox "Формат первого абзаца очищен."
 End Sub
+
 ```
 
 ## Задание 6.6.2: Изменение стиля каждой первой и пятой буквы каждого абзаца на курсив и изменение цвета текста в активном документе и выделенном тексте
