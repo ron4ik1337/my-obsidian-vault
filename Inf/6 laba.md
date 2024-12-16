@@ -316,41 +316,74 @@ End Sub
 ```basic
 Sub FormatEveryThirdWord
     Dim Doc As Object
-    Dim Enum As Object
-    Dim Paragraph As Object
     Dim Cursor As Object
     Dim WordCount As Integer
+    Dim Found As Boolean
     
+    ' Инициализация документа и курсора
     Doc = ThisComponent
-    Enum = Doc.Text.createEnumeration
+    Cursor = Doc.Text.createTextCursor()
     
+    ' Инициализация счетчика слов
     WordCount = 0
     
-    While Enum.hasMoreElements
-        Paragraph = Enum.nextElement
-        If Paragraph.supportsService("com.sun.star.text.Paragraph") Then
-            Dim WordEnum As Object
-            Dim TextElement As Object
-            WordEnum = Paragraph.createEnumeration
-            
-            While WordEnum.hasMoreElements
-                TextElement = WordEnum.nextElement
-                If TextElement.supportsService("com.sun.star.text.TextPortion") Then
-                    WordCount = WordCount + 1
-                    If WordCount Mod 3 = 0 Then
-                        ' Создание курсора для текущего слова
-                        Cursor = Doc.Text.createTextCursorByRange(TextElement.Start)
-                        Cursor.gotoEndOfWord(True)
-                        
-                        ' Изменение цвета и размера шрифта
-                        Cursor.CharColor = RGB(255, 0, 255) ' Фиолетовый цвет
-                        Cursor.CharHeight = 14 ' Размер шрифта 14 pt
-                    End If
-                End If
-            Wend
-        End If
-    Wend
+    ' Инициализация генератора случайных чисел
+    Randomize
     
+    ' Перемещение курсора в начало документа
+    Cursor.gotoStart(False)
+    
+    ' Цикл перебора всех слов в документе
+    Do While Cursor.gotoNextWord(True)
+        WordCount = WordCount + 1
+        If WordCount Mod 3 = 0 Then
+            ' Изменение цвета шрифта на случайный
+            Cursor.CharColor = RGB(Int(Rnd * 256), Int(Rnd * 256), Int(Rnd * 256))
+            
+            ' Изменение размера шрифта на случайный от 14 до 20 pt
+            Cursor.CharHeight = 14 + Int(Rnd * 7) ' 14 + 0..6 = 14..20
+        End If
+        ' Свернуть курсор к концу текущего слова для продолжения перебора
+        Cursor.collapseToEnd()
+    Loop
+    
+    ' Сообщение об успешном выполнении операции
+    MsgBox "Форматирование каждого третьего слова выполнено."
+End Sub
+Sub FormatEveryThirdWord
+    Dim Doc As Object
+    Dim Cursor As Object
+    Dim WordCount As Integer
+    Dim Found As Boolean
+    
+    ' Инициализация документа и курсора
+    Doc = ThisComponent
+    Cursor = Doc.Text.createTextCursor()
+    
+    ' Инициализация счетчика слов
+    WordCount = 0
+    
+    ' Инициализация генератора случайных чисел
+    Randomize
+    
+    ' Перемещение курсора в начало документа
+    Cursor.gotoStart(False)
+    
+    ' Цикл перебора всех слов в документе
+    Do While Cursor.gotoNextWord(True)
+        WordCount = WordCount + 1
+        If WordCount Mod 3 = 0 Then
+            ' Изменение цвета шрифта на случайный
+            Cursor.CharColor = RGB(Int(Rnd * 256), Int(Rnd * 256), Int(Rnd * 256))
+            
+            ' Изменение размера шрифта на случайный от 14 до 20 pt
+            Cursor.CharHeight = 14 + Int(Rnd * 7) ' 14 + 0..6 = 14..20
+        End If
+        ' Свернуть курсор к концу текущего слова для продолжения перебора
+        Cursor.collapseToEnd()
+    Loop
+    
+    ' Сообщение об успешном выполнении операции
     MsgBox "Форматирование каждого третьего слова выполнено."
 End Sub
 ```
