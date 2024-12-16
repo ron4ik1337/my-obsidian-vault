@@ -393,51 +393,79 @@ End Sub
 ### Макрос для замены запятых на три разноцветные точки
 
 ```basic
-Sub ReplaceCommasWithColoredDots
-    Dim Doc As Object
-    Dim Cursor As Object
-    Dim Found As Boolean
-    
-    Doc = ThisComponent
-    Cursor = Doc.Text.createTextCursor()
-    
-    Found = Cursor.gotoStart(False)
-    
-    Do While Cursor.findNext(",")
-        ' Установить курсор на запятую
-        Cursor.gotoStartOfWord(False)
-        Cursor.goRight(1, True) ' Выделить запятую
-        
-        ' Вставить три разноцветные точки
-        Dim Dot1 As String, Dot2 As String, Dot3 As String
-        Dot1 = "•" ' Точка 1
-        Dot2 = "•" ' Точка 2
-        Dot3 = "•" ' Точка 3
-        
-        ' Изменение цвета каждой точки
-        Dim Range1 As Object, Range2 As Object, Range3 As Object
-        Range1 = Cursor.Text.createTextCursorByRange(Cursor.Start)
-        Range1.goRight(1, True)
-        Range1.CharColor = RGB(255, 0, 0) ' Красный
-        
-        Range2 = Cursor.Text.createTextCursorByRange(Cursor.Start)
-        Range2.goRight(1, True)
-        Range2.CharColor = RGB(0, 255, 0) ' Зеленый
-        
-        Range3 = Cursor.Text.createTextCursorByRange(Cursor.Start)
-        Range3.goRight(1, True)
-        Range3.CharColor = RGB(0, 0, 255) ' Синий
-        
-        ' Заменить запятую на точки
-        Cursor.String = Dot1 & Dot2 & Dot3
-        
-        ' Перейти к следующей запятой
-        Found = Cursor.gotoNext(",", False)
-        If Not Found Then Exit Do
-    Loop
-    
-    MsgBox "Все запятые заменены на три разноцветные точки."
+Sub ReplaceCommaWithColoredDots
+    Dim oDoc As Object
+    Dim oText As Object
+    Dim oSearch As Object
+    Dim oFound As Object
+    Dim i As Long
+    Dim oFoundCursor As Object
+    Dim oInsertCursor As Object
+    Dim oDotCursor As Object
+    Dim nStart As Long
+    Dim nEnd As Long
+
+    ' Получаем доступ к текущему документу и его тексту
+    oDoc = ThisComponent
+    oText = oDoc.getText()
+
+    ' Создаём объект для поиска запятых
+    oSearch = oDoc.createSearchDescriptor()
+    oSearch.SearchString = ","
+
+    ' Находим все запятые в документе
+    oFound = oDoc.findAll(oSearch)
+
+    ' Проверяем, найдены ли запятые
+    If oFound.getCount() = 0 Then
+        MsgBox "В документе не найдено запятых для замены.", 64, "Информация"
+        Exit Sub
+    End If
+
+    ' Проходимся по всем найденным запятым с конца документа
+    For i = oFound.getCount() - 1 To 0 Step -1
+        oFoundCursor = oFound.getByIndex(i)
+
+        ' Удаляем запятую
+        oFoundCursor.setString("")
+
+        ' Вставляем красную точку
+        oText.insertString(oFoundCursor, "•", False)
+        ' Получаем позиции вставленной точки
+        nEnd = oFoundCursor.getEnd()
+        nStart = nEnd - 1
+        ' Создаём курсор для красной точки
+        oDotCursor = oDoc.Text.createTextCursor()
+        oDotCursor.setStart(nStart)
+        oDotCursor.setEnd(nEnd)
+        oDotCursor.CharColor = RGB(255, 0, 0) ' Красный
+
+        ' Вставляем зелёную точку
+        oText.insertString(oFoundCursor, "•", False)
+        ' Получаем позиции вставленной точки
+        nEnd = oFoundCursor.getEnd()
+        nStart = nEnd - 1
+        ' Создаём курсор для зелёной точки
+        oDotCursor = oDoc.Text.createTextCursor()
+        oDotCursor.setStart(nStart)
+        oDotCursor.setEnd(nEnd)
+        oDotCursor.CharColor = RGB(0, 255, 0) ' Зелёный
+
+        ' Вставляем синюю точку
+        oText.insertString(oFoundCursor, "•", False)
+        ' Получаем позиции вставленной точки
+        nEnd = oFoundCursor.getEnd()
+        nStart = nEnd - 1
+        ' Создаём курсор для синей точки
+        oDotCursor = oDoc.Text.createTextCursor()
+        oDotCursor.setStart(nStart)
+        oDotCursor.setEnd(nEnd)
+        oDotCursor.CharColor = RGB(0, 0, 255) ' Синий
+    Next i
+
+    MsgBox "Замена запятых на три разноцветные точки завершена.", 64, "Готово"
 End Sub
+
 ```
 
 **Примечание:** Данный макрос заменяет каждую запятую на три точки с разными цветами (красный, зеленый, синий). Символ `•` используется как точка. При необходимости можно изменить символы или цвета.
