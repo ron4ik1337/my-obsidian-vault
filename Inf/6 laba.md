@@ -204,34 +204,62 @@ End Sub
 ### Макрос для обмена местами двух абзацев
 
 ```basic
-Sub SwapTwoParagraphs
+Sub SwapTwoParagraphsFixed
     Dim Doc As Object
-    Dim Text As Object
+    Dim TextObj As Object
+    Dim Enum As Object
     Dim Paragraph1 As Object
     Dim Paragraph2 As Object
     Dim TempText As String
-    
+    Dim Count As Integer
+    Dim Elem As Object
+
+    ' Инициализация документа и текстового объекта
     Doc = ThisComponent
-    Text = Doc.Text
-    
-    ' Получение первого и второго абзацев
-    If Text.getParagraphCount() < 2 Then
+    TextObj = Doc.Text
+
+    ' Создание перечислителя для всех элементов текста
+    Enum = TextObj.createEnumeration()
+
+    ' Инициализация переменных
+    Count = 0
+    Paragraph1 = Nothing
+    Paragraph2 = Nothing
+
+    ' Перебор всех элементов текста для поиска первых двух абзацев
+    While Enum.hasMoreElements()
+        Elem = Enum.nextElement()
+
+        ' Проверка, является ли элемент абзацем
+        If Elem.supportsService("com.sun.star.text.Paragraph") Then
+            If Count = 0 Then
+                Paragraph1 = Elem
+            ElseIf Count = 1 Then
+                Paragraph2 = Elem
+            End If
+            Count = Count + 1
+        End If
+    Wend
+
+    ' Проверка наличия как минимум двух абзацев
+    If Count < 2 Then
         MsgBox "В документе менее двух абзацев."
         Exit Sub
     End If
-    
-    Paragraph1 = Text.getParagraphByIndex(0)
-    Paragraph2 = Text.getParagraphByIndex(1)
-    
-    ' Сохранение текста первого абзаца
+
+    ' Обмен текстом между первым и вторым абзацами
     TempText = Paragraph1.getString()
-    
-    ' Замена текста
     Paragraph1.setString(Paragraph2.getString())
     Paragraph2.setString(TempText)
-    
-    MsgBox "Абзацы обменяны местами."
+
+    ' Дополнительная проверка: убедиться, что абзацы не были удалены
+    If Paragraph1.getString() = "" And Paragraph2.getString() = "" Then
+        MsgBox "После обмена оба абзаца оказались пустыми."
+    Else
+        MsgBox "Абзацы успешно обменяны местами."
+    End If
 End Sub
+
 ```
 
 **Примечание:** Данный макрос обменивает местами первые два абзаца. Для обмена других абзацев можно изменить индексы `getParagraphByIndex`.
