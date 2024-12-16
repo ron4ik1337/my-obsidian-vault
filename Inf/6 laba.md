@@ -275,18 +275,25 @@ Sub ChangeFontColorAndSizeRandomly
     Dim Paragraph As Object
     Dim RandomColor As Long
     Dim RandomSize As Single
-    Dim RndGen As New Random
     
+    ' Инициализация генератора случайных чисел
+    Randomize
+    
+    ' Инициализация документа и перечислителя абзацев
     Doc = ThisComponent
-    Enum = Doc.Text.createEnumeration
+    Enum = Doc.Text.createEnumeration()
     
-    While Enum.hasMoreElements
-        Paragraph = Enum.nextElement
+    ' Перебор всех абзацев в документе
+    While Enum.hasMoreElements()
+        Paragraph = Enum.nextElement()
+        
+        ' Проверка, является ли элемент абзацем
         If Paragraph.supportsService("com.sun.star.text.Paragraph") Then
-            ' Генерация случайного цвета
-            RandomColor = RGB(Int(RndGen.Next() * 256), Int(RndGen.Next() * 256), Int(RndGen.Next() * 256))
+            ' Генерация случайного цвета (RGB)
+            RandomColor = RGB(Int(Rnd * 256), Int(Rnd * 256), Int(Rnd * 256))
+            
             ' Генерация случайного размера шрифта от 10 до 20 pt
-            RandomSize = 10 + RndGen.Next() * 10
+            RandomSize = 10 + (Rnd * 10)
             
             ' Применение форматирования к абзацу
             Paragraph.CharColor = RandomColor
@@ -294,44 +301,13 @@ Sub ChangeFontColorAndSizeRandomly
         End If
     Wend
     
+    ' Сообщение об успешном выполнении операции
     MsgBox "Цвет и размер шрифта каждого абзаца изменены на случайные значения."
 End Sub
+
 ```
 
 **Примечание:** В данном макросе используется объект `Random` для генерации случайных значений. Если среда LibreOffice Basic не поддерживает объект `Random`, можно использовать функцию `Rnd()`.
-
-### Альтернативный вариант с использованием функции `Rnd()`
-
-```basic
-Sub ChangeFontColorAndSizeRandomlyAlt
-    Dim Doc As Object
-    Dim Enum As Object
-    Dim Paragraph As Object
-    Dim RandomColor As Long
-    Dim RandomSize As Single
-    
-    Doc = ThisComponent
-    Enum = Doc.Text.createEnumeration
-    
-    Randomize ' Инициализация генератора случайных чисел
-    
-    While Enum.hasMoreElements
-        Paragraph = Enum.nextElement
-        If Paragraph.supportsService("com.sun.star.text.Paragraph") Then
-            ' Генерация случайного цвета
-            RandomColor = RGB(Int(Rnd * 256), Int(Rnd * 256), Int(Rnd * 256))
-            ' Генерация случайного размера шрифта от 10 до 20 pt
-            RandomSize = 10 + Rnd * 10
-            
-            ' Применение форматирования к абзацу
-            Paragraph.CharColor = RandomColor
-            Paragraph.CharHeight = RandomSize
-        End If
-    Wend
-    
-    MsgBox "Цвет и размер шрифта каждого абзаца изменены на случайные значения."
-End Sub
-```
 
 ## Задание 6.6.6: Изменение цвета и размера шрифта каждого третьего слова в тексте
 
