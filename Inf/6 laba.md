@@ -516,76 +516,56 @@ End Sub
 ### Реализация макроса
 
 ```basic
-Sub ReplaceCommasWithNumberedBrackets
-    Dim Doc As Object
-    Dim Text As Object
-    Dim Cursor As Object
-    Dim Found As Boolean
-    Dim CommaCount As Integer
-    Dim SearchString As String
-    Dim ReplaceString As String
-    Dim StartPos As Long
-    Dim EndPos As Long
-    Dim i As Integer
+Sub ReplaceCommasWithColoredBrackets
+    Dim oDoc As Object
+    Dim oText As Object
+    Dim oCursor As Object
+    Dim commaCount As Integer
+    Dim sReplace As String
+    Dim color As Long
+    Dim oSearch As Object
     
-    ' Инициализация документа и курсора
-    Doc = ThisComponent
-    Text = Doc.Text
-    Cursor = Doc.Text.createTextCursor()
+    ' Получаем ссылку на активный документ
+    oDoc = ThisComponent
+    oText = oDoc.Text
+    oCursor = oText.createTextCursor()
     
     ' Инициализация счетчика запятых
-    CommaCount = 0
+    commaCount = 0
     
     ' Инициализация генератора случайных чисел
     Randomize
     
-    ' Установка курсора в начало документа
-    Cursor.gotoStart(False)
+    ' Создание объекта поиска
+    oSearch = oDoc.createSearchDescriptor()
+    oSearch.setSearchString(",")  ' Ищем запятую
     
-    ' Цикл поиска запятых и их замены
-    Do
-        ' Поиск следующей запятой
-        Found = Cursor.findNext(",")
+    ' Начинаем поиск запятых по всему документу
+    oFound = oDoc.findFirst(oSearch)
+    
+    While Not IsNull(oFound)
+        commaCount = commaCount + 1
         
-        If Found Then
-            ' Увеличение счетчика запятых
-            CommaCount = CommaCount + 1
-            
-            ' Получение позиции запятой
-            StartPos = Cursor.Start
-            EndPos = Cursor.End
-            
-            ' Замена запятой на строку "<номер>"
-            ReplaceString = "<" & CStr(CommaCount) & ">"
-            Cursor.String = ReplaceString
-            
-            ' Создание нового курсора для форматирования скобочек
-            Dim FormatCursor As Object
-            FormatCursor = Doc.Text.createTextCursor()
-            FormatCursor.gotoStart(False)
-            FormatCursor.goRight(Len("<"), True) ' Выделение символа "<"
-            
-            ' Генерация случайного цвета для "<"
-            Dim RandomColor1 As Long
-            RandomColor1 = RGB(Int(Rnd * 256), Int(Rnd * 256), Int(Rnd * 256))
-            FormatCursor.CharColor = RandomColor1
-            
-            ' Перемещение курсора к символу ">"
-            FormatCursor.gotoEnd(False)
-            FormatCursor.goLeft(Len(">" ), True) ' Выделение символа ">"
-            
-            ' Генерация случайного цвета для ">"
-            Dim RandomColor2 As Long
-            RandomColor2 = RGB(Int(Rnd * 256), Int(Rnd * 256), Int(Rnd * 256))
-            FormatCursor.CharColor = RandomColor2
-            
-            ' Перемещение курсора после замененной строки
-            Cursor.gotoRange(Cursor.End, False)
-        End If
-    Loop While Found
+        ' Формируем новый текст для замены: "<номер>"
+        sReplace = "<" & commaCount & ">"
+        
+        ' Генерация случайного цвета
+        color = RGB(Int(Rnd() * 256), Int(Rnd() * 256), Int(Rnd() * 256))
+        
+        ' Заменяем запятую на новый текст
+        oFound.setString(sReplace)
+        
+        ' Устанавливаем случайный цвет для замененного текста
+        oFound.CharColor = color
+        
+        ' Ищем следующую запятую
+        oFound = oDoc.findNext(oFound.End, oSearch)
+    Wend
     
-    MsgBox "Все запятые заменены на нумерованные скобочки с случайным цветом."
+    ' Информируем пользователя о завершении
+    MsgBox "Запятые успешно заменены на скобочки с номерами и случайным цветом!", 64, "Завершено"
 End Sub
+
 ```
 
 ### Пояснение к коду
